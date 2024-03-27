@@ -20,6 +20,7 @@ public:
 	void compile();
 	void setSource(const std::string& source_);
 	void create();
+	void create(const Gl::Shader::Type& type);
 	void deleteShader();
 
 	void setType(Gl::Shader::Type type_);

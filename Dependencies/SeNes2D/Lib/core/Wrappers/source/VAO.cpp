@@ -75,15 +75,19 @@ void VAO::vertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean n
 }
 
 VAO::VAO(VAO&& other) noexcept
+	: _isBind(other._isBind), _id(other._id)
 {
-	*this = std::move(other);
+	other._id = Gl::VAO::invalidId;
+	other._isBind = false;
 }
+
 VAO& VAO::operator=(VAO&& other) noexcept
 {
-	if (this != &other)
-	{
+	if (this != &other) {
 		_isBind = other._isBind;
 		_id = other._id;
+		other._id = Gl::VAO::invalidId;
+		other._isBind = false;
 	}
 	return *this;
 }

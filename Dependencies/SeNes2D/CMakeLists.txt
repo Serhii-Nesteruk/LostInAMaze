@@ -21,10 +21,7 @@ target_link_libraries(SeNes2D INTERFACE
         glfw
         Wrappers
         Objects
+        # Lighting
 )
 
-target_include_directories(SeNes2D INTERFACE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Lib/glad/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/Lib/glew/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/Lib/glm
-)
+target_include_directories(SeNes2D INTERFACE Lib/core/Lighting/include)

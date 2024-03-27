@@ -5,21 +5,27 @@ void sn::Rectangle::draw(const std::string& programName, ShaderProgram* program,
 	updateMatrices();
 
 	program->uniform("model", 1, GL_FALSE, _modelMatrix);
+	program->uniform("uDefaultColor", _rgb);
 
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 void sn::Rectangle::setupVertices()
 {
-	std::vector<GLfloat> vertices = {
-		_position.x, _position.y,
-		_position.x + _size, _position.y,
-		_position.x + _size, _position.y + _size,
+	float halfSize = _size / 2.0f;
 
-		_position.x, _position.y,
-		_position.x, _position.y + _size,
-		_position.x + _size, _position.y + _size,
+	std::vector<float> vertices = {
+		// left bottom triangle
+		-halfSize, -halfSize, 0.0f,
+		halfSize,  halfSize, 0.0f,
+		-halfSize,  halfSize, 0.0f,
+
+		// right triangle
+		-halfSize, -halfSize, 0.0f,
+		halfSize, -halfSize, 0.0f,
+		halfSize,  halfSize, 0.0f
 	};
+
 
 	setVertices(vertices);
 
@@ -30,7 +36,7 @@ void sn::Rectangle::setupVertices()
 	_vao.bind();
 
 	_vbo.setData(_vertices);
-	_vao.vertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+	_vao.vertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 
 	_vao.bind();
 	_vbo.bind();
@@ -47,13 +53,42 @@ GLfloat sn::Rectangle::getSize() const
 	return _size;
 }
 
-void sn::Rectangle::setPosition(const glm::vec3& position)
+sn::Rectangle::Rectangle(bool isSetupVertices /*= false*/)
 {
-	SceneObject::setPosition(position);
-	setupVertices();
+	if (isSetupVertices)
+	{
+		setupVertices();
+	}
 }
 
-sn::Rectangle::Rectangle()
+sn::Rectangle::Rectangle(sn::Rectangle&& other) noexcept
+	: SceneObject(std::move(other))
 {
-	setupVertices();
+	if (this != &other)
+	{
+		_size = other._size;
+	}
 }
+
+sn::Rectangle& sn::Rectangle::operator=(sn::Rectangle&& other) noexcept
+{
+	if (this != &other)
+	{
+		SceneObject::operator=(std::move(other));
+		_size = std::move(other._size);
+
+		other._size = { };
+	}
+
+	return *this;
+}
+void sn::Rectangle::setColor(const Color3& rgb)
+{
+	_rgb = rgb;
+}
+Color3 sn::Rectangle::getColor() const
+{
+	return _rgb;
+};
+
+

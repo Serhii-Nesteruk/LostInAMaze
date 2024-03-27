@@ -29,6 +29,7 @@ public:
 	void clear(GLbitfield mask);
 	void clearColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
 	void initGLFWVersion(int hint, int value);
+	void initGLAD();
 	void makeContextCurrent();
     Size getFramebufferSize();
 	[[nodiscard]] bool shouldClose();

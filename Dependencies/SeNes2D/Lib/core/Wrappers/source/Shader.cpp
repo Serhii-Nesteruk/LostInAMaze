@@ -121,3 +121,9 @@ void Shader::dataReset(Shader& shader)
 	shader._source.clear();
 	shader._isCompile = false;
 }
+
+void Shader::create(const Gl::Shader::Type& type)
+{
+	_type = type;
+	create();
+}

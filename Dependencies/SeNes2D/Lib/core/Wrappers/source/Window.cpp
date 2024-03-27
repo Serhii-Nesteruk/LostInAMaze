@@ -99,6 +99,14 @@ bool Window::shouldClose()
 	return glfwWindowShouldClose(_window);
 }
 
+void Window::initGLAD()
+{
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		throw std::runtime_error("Failed to initialize GLAD");
+	}
+}
+
 Window::Size::Size(GLint x, GLint y)  : _x(x), _y(y) {
 }
 
